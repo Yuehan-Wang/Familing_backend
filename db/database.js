@@ -8,5 +8,7 @@ fs.initializeApp({
 });
 console.log("firebase connected");
 
-const db = fs.firestore();
+const db = fs.database();
 console.log("firestore created");
+
+module.exports = db;

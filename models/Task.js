@@ -29,20 +29,20 @@ class Task {
     this.schedule = schedule; // instance of RepeatSchedule
   }
   toJSON() {
-    return {
-      id: this.id,
-      title: this.title,
-      description: this.description,
-      creatorId: this.creatorId,
-      assigneeIds: this.assigneeIds,
-      createTime: this.createTime,
-      dueDate: this.dueDate,
-      status: this.status,
-      priority: this.priority,
-      lastUpdatedTime: this.lastUpdatedTime,
-      tags: this.tags,
-      completionTime: this.completionTime,
-      schedule: this.schedule.toJSON(),
-    };
+    const cleanObject = Object.entries(this).reduce((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+    if (this.schedule && typeof this.schedule.toJSON === "function") {
+      cleanObject.schedule = this.schedule.toJSON();
+    } else {
+      cleanObject.schedule = null;
+    }
+
+    return cleanObject;
   }
 }
+module.exports = Task;

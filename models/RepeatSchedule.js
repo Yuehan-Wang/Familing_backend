@@ -18,14 +18,19 @@ class RepeatSchedule {
   }
 
   toJSON() {
-    return {
-      frequency: this.frequency,
-      interval: this.interval,
-      daysOfWeek: this.daysOfWeek,
-      dayOfMonth: this.dayOfMonth,
-      customPattern: this.customPattern,
-      startTime: this.startTime,
-      endTime: this.endTime,
-    };
+    const cleanObject = Object.entries(this).reduce((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+    if (this.schedule && typeof this.schedule.toJSON === "function") {
+      cleanObject.schedule = this.schedule.toJSON();
+    } else {
+      cleanObject.schedule = null;
+    }
+
+    return cleanObject;
   }
 }
